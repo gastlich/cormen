@@ -1,17 +1,22 @@
-def binary_add(a, b):
-    print('Input: insertion_sort({})'.format(a))
-    for j in range(1, len(a)):
-        key = a[j]
-        i = j - 1
+from helpers import print_inout
+from typing import List
 
-        while i >= 0 and a[i] > key:
-            a[i+1], a[i] = a[i], a[i+1]
 
-            i = i - 1
-        a[i+1] = key
+@print_inout
+def binary_add(a: List[int], b: List[int]) -> List[int]:
+    c = []
 
-    print('Output: {}\n'.format(a))
-    return a
+    remainder = 0
+    for pair in zip(reversed(a), reversed(b)):
+        remainder, val = divmod(sum(pair) + remainder, 2)
+        c.append(val)
+
+    c.append(remainder)
+
+    return list(reversed(c))
+
 
 if __name__ == "__main__":
-    binary_add([1, 0, 1, 1], [1, 1, 1, 0])
+    assert binary_add([1, 0, 1, 1], [1, 1, 1, 0]) == [1, 1, 0, 0, 1]
+    assert binary_add([1, 0], [0, 1]) == [0, 1, 1]
+    assert binary_add([0, 1], [0, 1]) == [0, 1, 0]
